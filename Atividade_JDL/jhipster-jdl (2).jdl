@@ -1,0 +1,58 @@
+entity Produto{
+	nome String
+    descricao String
+    preco Float
+    foto String
+    dataCadastro LocalDate
+    estado Boolean
+    estoque Integer
+}
+
+entity Cliente{
+	nome String
+    telefone String
+    email String
+    login String
+    senha String
+    cep Integer
+    lagradouro String
+    bairro String
+    cidade String
+    
+}
+
+entity Pedido{
+	dataCadastro LocalDate
+    listaPedidos String
+    formaPagamento Pagamento
+    precoTotal Float
+    troco Float
+    statusPedido StatusP 
+    observacaoEntrega String
+    entregadorAlocado String
+    clienteDoPedido String
+    
+}
+enum Pagamento{
+	DINHEIRO, CARTAO
+}
+enum StatusP{
+	PEDIDO, EM TRANSITO, ENTREGUE
+}
+
+entity Entregador{
+	nome String
+    placa Integer
+    latitude String
+    longitude String
+    cpf Integer
+    linkFoto String   
+}
+
+relationship OneToMany{
+	Cliente to Produto
+    Cliente to Pedido
+    Entregador to Cliente
+    Entregador to Pedido
+    Pedido to Produto
+}
