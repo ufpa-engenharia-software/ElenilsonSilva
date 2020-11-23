@@ -1,58 +1,71 @@
-entity Produto{
-	nome String
-    descricao String
-    preco Float
-    foto String
-    dataCadastro LocalDate
-    estado Boolean
-    estoque Integer
-}
-
-entity Cliente{
-	nome String
-    telefone String
-    email String
-    login String
-    senha String
-    cep Integer
-    lagradouro String
-    bairro String
-    cidade String
-    
-}
-
-entity Pedido{
+entity Produto {
+	nome String 
+	descricao String 
+	preco Float
+	linkFoto String 
 	dataCadastro LocalDate
-    listaPedidos String
-    formaPagamento Pagamento
-    precoTotal Float
-    troco Float
-    statusPedido StatusP 
+	estado Estado
+	totalEstoque Integer
+}
+
+entity Cliente {
+    nome String 
+    telefone Integer 
+    email String unique
+    login String unique 
+    senha String 
+    cep Integer 
+    logradouro String 
+    bairro String 
+    cidade String
+}
+
+entity Pedido {
+    dataCadastro ZonedDateTime 
+    lista String
+    pagamento Pagamento
+    valorTotal Float
+    valorTotalTroco Float
+    status StatusPedido
     observacaoEntrega String
-    entregadorAlocado String
-    clienteDoPedido String
-    
-}
-enum Pagamento{
-	DINHEIRO, CARTAO
-}
-enum StatusP{
-	PEDIDO, EM TRANSITO, ENTREGUE
+    nomePessoaReceber String	
 }
 
-entity Entregador{
-	nome String
-    placa Integer
-    latitude String
-    longitude String
-    cpf Integer
-    linkFoto String   
+entity ProdutoPedido{
+	quantidade Integer
+	preco Double
 }
 
-relationship OneToMany{
-	Cliente to Produto
-    Cliente to Pedido
-    Entregador to Cliente
-    Entregador to Pedido
-    Pedido to Produto
+entity Entregador {
+    nome String 
+    placa Float 
+    latitude Float 
+    longitude Float
+    cpf Integer 
+    linkFoto String
+
+}
+
+enum Estado {
+    DISPONIVEL, INDISPONIVEL
+}
+
+enum Pagamento {
+    DINHEIRO, CARTAO
+}
+
+enum StatusPedido { 
+    PEDIDO, EM_TRANSITO, ENTREGUE 
+}
+
+relationship OneToMany {
+	Cliente to Pedido{cliente(nome)}
+	Entregador{pedidos} to Pedido{entregador(nome)}
+	Produto to ProdutoPedido{produto(nome)}
+	Pedido{produtosPedidos} to ProdutoPedido{pedido}
+}
+
+relationship ManyToMany {
+	Cliente {entregadores} to Entregador {clientes}
+	
 }
